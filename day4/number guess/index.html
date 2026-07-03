@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Number Guess Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1> Number Guess Challenge</h1>
+
+    <p class="subtitle">
+        Guess the hidden number and become the champion!
+    </p>
+
+    <div class="difficulty">
+        <button onclick="setDifficulty('easy')">Easy</button>
+        <button onclick="setDifficulty('medium')">Medium</button>
+        <button onclick="setDifficulty('hard')">Hard</button>
+    </div>
+
+    <h2 id="range">Range: 1 - 50</h2>
+
+    <input
+        type="number"
+        id="guessInput"
+        placeholder="Enter your guess..."
+    >
+
+    <div class="buttons">
+        <button onclick="checkGuess()">Guess</button>
+        <button onclick="showHint()">Hint</button>
+        <button onclick="restartGame()">Restart</button>
+        <button onclick="toggleTheme()">🌙</button>
+    </div>
+
+    <h3 id="message">Start Guessing...</h3>
+
+    <div class="stats">
+        <p>Attempts<br><span id="attempts">0</span></p>
+        <p>Score<br><span id="score">100</span></p>
+        <p>Best Score<br><span id="bestScore">0</span></p>
+    </div>
+
+    <div class="history-box">
+        <h3>📜 Guess History</h3>
+        <ul id="history"></ul>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
