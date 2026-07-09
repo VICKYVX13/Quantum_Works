@@ -1,0 +1,181 @@
+/* Analytics */
+.analytics { display: flex; flex-direction: column; gap: 24px; }
+.analytics-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+
+/* Top stats row */
+.analytics-stats-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.analytics-stat-card {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  transition: var(--transition);
+}
+
+.analytics-stat-card:hover { transform: translateY(-4px); }
+
+.analytics-stat-icon { flex-shrink: 0; }
+
+.analytics-stat-value {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.analytics-stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Charts row */
+.analytics-charts-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.analytics-chart-card { padding: 24px; }
+
+/* Bar chart */
+.bar-chart-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 200px;
+  padding-top: 10px;
+}
+
+.bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+}
+
+.bar-track {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.bar-fill {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  transition: height 1s cubic-bezier(0.4,0,0.2,1);
+  animation: bar-grow 0.8s ease both;
+  cursor: pointer;
+  min-height: 4px;
+}
+
+.bar-fill:hover { opacity: 0.8; filter: brightness(1.1); }
+
+.bar-label { font-size: 10px; color: var(--text-muted); text-align: center; }
+.bar-value { font-size: 11px; font-weight: 700; color: var(--text-secondary); }
+
+/* Performance chart */
+.perf-chart { display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
+
+.perf-item { display: flex; flex-direction: column; gap: 4px; }
+
+.perf-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.perf-avg-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+/* Shift distribution */
+.shift-dist { display: flex; flex-direction: column; gap: 14px; }
+
+.shift-dist-item { display: flex; flex-direction: column; gap: 6px; }
+
+.shift-dist-header { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary); }
+
+/* Salary bars */
+.salary-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 80px;
+}
+
+.salary-bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+}
+
+.salary-bar-track {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.salary-bar-fill {
+  width: 100%;
+  background: var(--gradient-secondary);
+  border-radius: 4px 4px 0 0;
+  animation: bar-grow 0.8s ease both;
+  min-height: 3px;
+}
+
+.salary-bar-label { font-size: 9px; color: var(--text-muted); text-align: center; white-space: nowrap; }
+.salary-bar-val { font-size: 10px; font-weight: 700; color: var(--text-secondary); }
+
+/* Salary summary */
+.salary-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.salary-stat-card {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: var(--transition);
+}
+
+.salary-stat-card:hover { transform: translateY(-3px); }
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .analytics-stats-row { grid-template-columns: repeat(3, 1fr); }
+  .analytics-charts-row { grid-template-columns: 1fr 1fr; }
+  .salary-summary-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .analytics-stats-row { grid-template-columns: repeat(2, 1fr); }
+  .analytics-charts-row { grid-template-columns: 1fr; }
+  .salary-summary-grid { grid-template-columns: 1fr 1fr; }
+}
