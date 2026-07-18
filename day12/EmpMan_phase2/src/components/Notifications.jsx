@@ -1,19 +1,47 @@
 import { useApp } from '../context/AppContext';
+import { AlertTriangle, CheckCircle, Info, AlertCircle, Clock, Check } from 'lucide-react';
 import './Notifications.css';
 
 const typeConfig = {
-  warning: { color: '#f59e0b', bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.3)' },
-  success: { color: '#10b981', bg: 'rgba(16,185,129,0.1)',  border: 'rgba(16,185,129,0.3)' },
-  info:    { color: '#06b6d4', bg: 'rgba(6,182,212,0.1)',   border: 'rgba(6,182,212,0.3)' },
-  danger:  { color: '#ef4444', bg: 'rgba(239,68,68,0.1)',   border: 'rgba(239,68,68,0.3)' },
+  warning: { cls: 'badge-warning', icon: <AlertTriangle size={16} />, border: '#F59E0B' },
+  success: { cls: 'badge-success', icon: <CheckCircle size={16} />, border: '#10B981' },
+  info:    { cls: 'badge-info',    icon: <Info size={16} />, border: '#2563EB' },
+  danger:  { cls: 'badge-danger',  icon: <AlertCircle size={16} />, border: '#EF4444' },
 };
+
+const typeLabels = { warning: 'Warnings', success: 'Success', info: 'Info', danger: 'Alerts' };
+
+function NotifCard({ notif, onRead }) {
+  const cfg = typeConfig[notif.type] || typeConfig.info;
+  return (
+    <div className={`notif-card card ${notif.read ? 'notif-read' : ''}`} style={{ borderLeft: `3px solid ${cfg.border}` }}>
+      <div className={`notif-icon ${notif.read ? '' : cfg.cls}`}>{cfg.icon}</div>
+      <div className="notif-content">
+        <div className="notif-title">{notif.title}</div>
+        <div className="notif-message">{notif.message}</div>
+        <div className="notif-meta">
+          <Clock size={12} />
+          <span className="notif-time">{notif.time}</span>
+          {!notif.read && <span className="badge badge-primary" style={{ fontSize: 10 }}>NEW</span>}
+        </div>
+      </div>
+      {!notif.read ? (
+        <button className="btn btn-secondary btn-sm notif-action-btn" onClick={() => onRead(notif.id)} id={`mark-read-${notif.id}`}>
+          Mark Read
+        </button>
+      ) : (
+        <Check size={16} color="var(--accent-success)" style={{ flexShrink: 0 }} />
+      )}
+    </div>
+  );
+}
 
 export default function Notifications() {
   const { notifications, markNotificationRead, markAllRead, unreadCount } = useApp();
 
   return (
-    <div className="notifs animate-fade-in">
-      <div className="notifs-header">
+    <div className="notifs">
+      <div className="dashboard-header">
         <div>
           <h1 className="dashboard-title">Notifications</h1>
           <p className="dashboard-subtitle">
@@ -22,82 +50,55 @@ export default function Notifications() {
         </div>
         {unreadCount > 0 && (
           <button className="btn btn-secondary" onClick={markAllRead} id="mark-all-read-btn">
-            ✅ Mark All as Read
+            Mark All as Read
           </button>
         )}
       </div>
 
-      {/* Notification type summary */}
+      {/* Type Summary */}
       <div className="notif-summary">
-        {['warning','success','info','danger'].map(type => {
+        {['warning', 'success', 'info', 'danger'].map(type => {
           const count = notifications.filter(n => n.type === type).length;
           const cfg = typeConfig[type];
-          const icons = { warning: '⚠️', success: '✅', info: 'ℹ️', danger: '🔴' };
-          const labels = { warning: 'Warnings', success: 'Success', info: 'Info', danger: 'Alerts' };
           return (
-            <div key={type} className="notif-type-card card" style={{ borderColor: cfg.border }}>
-              <span style={{ fontSize: 24 }}>{icons[type]}</span>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: cfg.color }}>{count}</div>
-              <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{labels[type]}</div>
+            <div key={type} className="kpi-card">
+              <div className="kpi-header">
+                <span className="kpi-title">{typeLabels[type]}</span>
+                <div className={`kpi-icon-wrap ${cfg.cls}`}>{cfg.icon}</div>
+              </div>
+              <div className="kpi-body">
+                <span className="kpi-value">{count}</span>
+              </div>
             </div>
           );
         })}
       </div>
 
-      {/* Notification list */}
-      <div className="notifs-list">
-        {unreadCount > 0 && (
-          <div className="notif-section-header">
-            <span className="badge badge-danger">🔴 Unread ({unreadCount})</span>
+      {/* Lists */}
+      {unreadCount > 0 && (
+        <div>
+          <div style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 12 }}>
+            Unread ({unreadCount})
           </div>
-        )}
-        {notifications.filter(n => !n.read).map(n => (
-          <NotifCard key={n.id} notif={n} onRead={markNotificationRead} />
-        ))}
-        {notifications.some(n => n.read) && (
-          <div className="notif-section-header" style={{ marginTop: 12 }}>
-            <span className="badge badge-info">📋 Read</span>
+          <div className="notifs-list">
+            {notifications.filter(n => !n.read).map(n => (
+              <NotifCard key={n.id} notif={n} onRead={markNotificationRead} />
+            ))}
           </div>
-        )}
-        {notifications.filter(n => n.read).map(n => (
-          <NotifCard key={n.id} notif={n} onRead={markNotificationRead} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function NotifCard({ notif, onRead }) {
-  const cfg = typeConfig[notif.type] || typeConfig.info;
-  return (
-    <div
-      className={`notif-card card ${notif.read ? 'notif-read' : 'notif-unread'}`}
-      style={{ borderLeft: `4px solid ${cfg.color}` }}
-    >
-      <div className="notif-icon" style={{ background: cfg.bg, border: `1px solid ${cfg.border}` }}>
-        {notif.icon}
-      </div>
-      <div className="notif-content">
-        <div className="notif-title">{notif.title}</div>
-        <div className="notif-message">{notif.message}</div>
-        <div className="notif-meta">
-          <span className="notif-time">🕐 {notif.time}</span>
-          {!notif.read && (
-            <span className="badge badge-primary" style={{ fontSize: 10 }}>NEW</span>
-          )}
         </div>
-      </div>
-      {!notif.read && (
-        <button
-          className="btn btn-secondary btn-sm notif-action-btn"
-          onClick={() => onRead(notif.id)}
-          id={`mark-read-${notif.id}`}
-        >
-          Mark Read
-        </button>
       )}
-      {notif.read && (
-        <span className="notif-read-check">✓</span>
+
+      {notifications.some(n => n.read) && (
+        <div>
+          <div style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', color: 'var(--text-muted)', margin: '16px 0 12px' }}>
+            Read
+          </div>
+          <div className="notifs-list">
+            {notifications.filter(n => n.read).map(n => (
+              <NotifCard key={n.id} notif={n} onRead={markNotificationRead} />
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

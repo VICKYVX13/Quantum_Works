@@ -1,0 +1,31 @@
+{
+  "name": "ems-pro-playwright-tests",
+  "version": "1.0.0",
+  "description": "Playwright Automation Framework for EMS Pro – Employee Management System",
+  "scripts": {
+    "test": "npx playwright test --config=playwright.config.js",
+    "test:headed": "npx playwright test --config=playwright.config.js --headed",
+    "test:setup": "npx playwright test --config=playwright.config.js --project=setup",
+    "test:modules": "npx playwright test --config=playwright.config.js --project=ems-tests",
+    "test:login": "npx playwright test specs/01_login.spec.js --project=ems-tests",
+    "test:dashboard": "npx playwright test specs/02_dashboard.spec.js --project=ems-tests",
+    "test:employees": "npx playwright test specs/03_employees.spec.js --project=ems-tests",
+    "test:attendance": "npx playwright test specs/04_attendance.spec.js --project=ems-tests",
+    "test:leave": "npx playwright test specs/05_leave_management.spec.js --project=ems-tests",
+    "test:payroll": "npx playwright test specs/06_payroll.spec.js --project=ems-tests",
+    "test:hr": "npx playwright test specs/07_hr_management.spec.js --project=ems-tests",
+    "test:departments": "npx playwright test specs/08_department_management.spec.js --project=ems-tests",
+    "test:roles": "npx playwright test specs/09_roles_permissions.spec.js --project=ems-tests",
+    "test:users": "npx playwright test specs/10_user_management.spec.js --project=ems-tests",
+    "test:reports": "npx playwright test specs/11_reports.spec.js --project=ems-tests",
+    "test:notifications": "npx playwright test specs/12_notifications.spec.js --project=ems-tests",
+    "test:settings": "npx playwright test specs/13_settings.spec.js --project=ems-tests",
+    "test:profile": "npx playwright test specs/14_profile.spec.js --project=ems-tests",
+    "test:password": "npx playwright test specs/15_change_password.spec.js --project=ems-tests",
+    "test:logout": "npx playwright test specs/16_logout.spec.js --project=ems-tests",
+    "report": "npx playwright show-report reports/html-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}

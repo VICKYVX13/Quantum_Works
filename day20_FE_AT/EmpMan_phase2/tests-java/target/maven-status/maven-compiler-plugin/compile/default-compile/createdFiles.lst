@@ -1,0 +1,8 @@
+com\ems\pages\AttendancePage.class
+com\ems\pages\PayrollPage.class
+com\ems\pages\DashboardPage.class
+com\ems\pages\EmployeePage.class
+com\ems\pages\HRPage.class
+com\ems\pages\SidebarPage.class
+com\ems\pages\LoginPage.class
+com\ems\pages\SettingsPage.class

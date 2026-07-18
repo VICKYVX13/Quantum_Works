@@ -1,17 +1,59 @@
 import { useApp } from '../context/AppContext';
+import {
+  LayoutDashboard,
+  Users,
+  ClipboardCheck,
+  Calendar,
+  Briefcase,
+  CreditCard,
+  LineChart,
+  FileText,
+  Bell,
+  Settings,
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
+  Zap,
+  User,
+  Clock,
+  HelpCircle,
+  GraduationCap
+} from 'lucide-react';
 import './Sidebar.css';
 
-const navItems = [
-  { id: 'dashboard',      icon: '📊', label: 'Dashboard',       badge: null },
-  { id: 'employees',      icon: '👥', label: 'Employees',        badge: null },
-  { id: 'schedule',       icon: '📅', label: 'Schedule',         badge: null },
-  { id: 'analytics',      icon: '📈', label: 'Analytics',        badge: null },
-  { id: 'notifications',  icon: '🔔', label: 'Notifications',    badge: 'unread' },
-  { id: 'settings',       icon: '⚙️', label: 'Settings',         badge: null },
+const adminNavItems = [
+  { id: 'dashboard',      icon: <LayoutDashboard size={20} />, label: 'Dashboard',       badge: null },
+  { id: 'employees',      icon: <Users size={20} />,           label: 'Employees',        badge: null },
+  { id: 'attendance',     icon: <ClipboardCheck size={20} />,  label: 'Attendance',      badge: null },
+  { id: 'schedule',       icon: <Calendar size={20} />,        label: 'Schedule',         badge: null },
+  { id: 'hr',             icon: <Briefcase size={20} />,       label: 'HR Module',        badge: null },
+  { id: 'payroll',        icon: <CreditCard size={20} />,      label: 'Payroll',          badge: null },
+  { id: 'analytics',      icon: <LineChart size={20} />,       label: 'Analytics',        badge: null },
+  { id: 'reports',        icon: <FileText size={20} />,        label: 'Reports',          badge: null },
+  { id: 'notifications',  icon: <Bell size={20} />,            label: 'Notifications',    badge: 'unread' },
+  { id: 'settings',       icon: <Settings size={20} />,        label: 'Settings',         badge: null },
+];
+
+const employeeNavItems = [
+  { id: 'ess-dashboard',      icon: <LayoutDashboard size={20} />, label: 'Dashboard',       badge: null },
+  { id: 'ess-profile',        icon: <User size={20} />,            label: 'My Profile',      badge: null },
+  { id: 'ess-attendance',     icon: <Clock size={20} />,           label: 'Attendance',      badge: null },
+  { id: 'ess-leave',          icon: <Calendar size={20} />,        label: 'Leave Management', badge: null },
+  { id: 'ess-payroll',        icon: <CreditCard size={20} />,      label: 'Payroll',          badge: null },
+  { id: 'ess-documents',      icon: <FileText size={20} />,        label: 'Documents',        badge: null },
+  { id: 'ess-projects',       icon: <Briefcase size={20} />,       label: 'My Projects',      badge: null },
+  { id: 'ess-training',       icon: <GraduationCap size={20} />,   label: 'Training',         badge: null },
+  { id: 'ess-notifications',  icon: <Bell size={20} />,            label: 'Notifications',    badge: 'unread' },
+  { id: 'ess-directory',      icon: <Users size={20} />,           label: 'Company Directory',badge: null },
+  { id: 'ess-support',        icon: <HelpCircle size={20} />,      label: 'Help & Support',   badge: null },
+  { id: 'ess-settings',       icon: <Settings size={20} />,        label: 'Settings',         badge: null },
 ];
 
 export default function Sidebar({ onLogout }) {
-  const { activeView, setActiveView, unreadCount, sidebarOpen, setSidebarOpen, theme } = useApp();
+  const { activeView, setActiveView, unreadCount, sidebarOpen, setSidebarOpen, currentUser } = useApp();
+
+  const isEmployee = currentUser?.role === 'employee';
+  const displayItems = isEmployee ? employeeNavItems : adminNavItems;
 
   return (
     <>
@@ -27,7 +69,7 @@ export default function Sidebar({ onLogout }) {
         {/* Header */}
         <div className="sidebar-header">
           <div className="sidebar-logo">
-            <span className="sidebar-logo-icon">⚡</span>
+            <span className="sidebar-logo-icon"><Zap size={24} color="var(--accent-primary)" /></span>
             {sidebarOpen && (
               <span className="sidebar-logo-text">EMS Pro</span>
             )}
@@ -38,25 +80,30 @@ export default function Sidebar({ onLogout }) {
             aria-label="Toggle sidebar"
             id="sidebar-toggle-btn"
           >
-            {sidebarOpen ? '◀' : '▶'}
+            {sidebarOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
           </button>
         </div>
 
-        {/* Admin profile chip */}
+        {/* Profile chip */}
         {sidebarOpen && (
           <div className="sidebar-profile">
-            <div className="sidebar-profile-avatar">A</div>
-            <div className="sidebar-profile-info">
-              <span className="sidebar-profile-name">Admin User</span>
-              <span className="sidebar-profile-role">Super Administrator</span>
+            <div className="sidebar-profile-avatar">
+              {isEmployee ? currentUser?.employee?.name?.split(' ').map(n=>n[0]).join('') : 'A'}
             </div>
-            <span className="sidebar-profile-dot dot dot-success" />
+            <div className="sidebar-profile-info">
+              <span className="sidebar-profile-name">
+                {isEmployee ? currentUser?.employee?.name : 'Admin User'}
+              </span>
+              <span className="sidebar-profile-role">
+                {isEmployee ? currentUser?.employee?.role : 'Super Administrator'}
+              </span>
+            </div>
           </div>
         )}
 
         {/* Navigation */}
         <nav className="sidebar-nav" role="navigation" aria-label="Main navigation">
-          {navItems.map(item => {
+          {displayItems.map(item => {
             const isActive = activeView === item.id;
             const badgeCount = item.badge === 'unread' ? unreadCount : null;
             return (
@@ -66,7 +113,7 @@ export default function Sidebar({ onLogout }) {
                 className={`sidebar-nav-item ${isActive ? 'active' : ''}`}
                 onClick={() => setActiveView(item.id)}
                 aria-current={isActive ? 'page' : undefined}
-                data-tooltip={!sidebarOpen ? item.label : undefined}
+                title={!sidebarOpen ? item.label : undefined}
               >
                 <span className="nav-icon">{item.icon}</span>
                 {sidebarOpen && (
@@ -89,18 +136,17 @@ export default function Sidebar({ onLogout }) {
         <div className="sidebar-footer">
           {sidebarOpen && (
             <div className="sidebar-version">
-              <span className="badge badge-primary">v2.0.0</span>
-              <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>EMS Pro</span>
+              <span className="badge badge-primary">v3.0 Enterprise</span>
             </div>
           )}
           <button
             id="logout-btn"
             className="sidebar-logout btn"
             onClick={onLogout}
-            style={{ width: '100%', justifyContent: sidebarOpen ? 'flex-start' : 'center' }}
+            style={{ width: '100%', justifyContent: sidebarOpen ? 'flex-start' : 'center', background: 'transparent', border: 'none', color: 'var(--text-secondary)' }}
           >
-            <span>🚪</span>
-            {sidebarOpen && 'Logout'}
+            <LogOut size={20} />
+            {sidebarOpen && <span style={{ marginLeft: 8 }}>Logout</span>}
           </button>
         </div>
       </aside>

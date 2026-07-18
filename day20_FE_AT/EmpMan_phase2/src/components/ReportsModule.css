@@ -1,0 +1,52 @@
+.reports-module {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Report Type Grid */
+.report-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.report-type-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+}
+
+.report-type-card:hover {
+  border-color: #BFDBFE;
+  background: #FAFCFF;
+}
+
+.report-type-card.active {
+  border-color: var(--accent-primary);
+  background: #EFF6FF;
+}
+
+.report-type-icon {
+  margin-bottom: 4px;
+}
+
+.report-type-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.report-type-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}

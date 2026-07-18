@@ -1,0 +1,16 @@
+com\ems\tests\A04_AttendanceTest.class
+com\ems\tests\A08_DepartmentsTest.class
+com\ems\tests\A03_EmployeeTest.class
+com\ems\tests\A02_DashboardTest.class
+com\ems\tests\A05_LeaveManagementTest.class
+com\ems\base\TestFailureExtension.class
+com\ems\tests\A06_PayrollTest.class
+com\ems\tests\A01_LoginTest.class
+com\ems\tests\A14_LogoutTest.class
+com\ems\base\BaseTest.class
+com\ems\tests\A13_ProfileTest.class
+com\ems\tests\A07_HRManagementTest.class
+com\ems\tests\A10_ReportsTest.class
+com\ems\tests\A12_SettingsTest.class
+com\ems\tests\A09_RolesPermissionsTest.class
+com\ems\tests\A11_NotificationsTest.class
